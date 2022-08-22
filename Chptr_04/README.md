@@ -1,3 +1,3 @@
-# Frdy Food App
+# Food app
 
 Flutter practice project
