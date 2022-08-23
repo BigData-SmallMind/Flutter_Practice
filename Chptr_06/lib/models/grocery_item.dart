@@ -4,7 +4,6 @@ enum Importance { low, medium, high }
 
 class GroceryItem {
   final String id;
-
   final String name;
   final Importance importance;
   final Color color;
