@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/components/friend_post_tile.dart';
 import '../models/models.dart';
-import '../components/components.dart';
 
 class FriendPostListView extends StatelessWidget {
   final List<Post> friendPosts;
@@ -13,7 +11,7 @@ class FriendPostListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
