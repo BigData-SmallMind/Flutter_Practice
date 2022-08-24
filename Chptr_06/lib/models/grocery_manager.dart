@@ -4,7 +4,7 @@ import 'grocery_item.dart';
 class GroceryManager extends ChangeNotifier {
   // 1
   final _groceryItems = <GroceryItem>[];
-
+  int itemIndex = 0;
   // 2
   List<GroceryItem> get groceryItems => List.unmodifiable(_groceryItems);
 
@@ -27,8 +27,15 @@ class GroceryManager extends ChangeNotifier {
   }
 
   // 6
-  void completeItem(int index, bool change) {
+  void completeItem(int index, bool? change) {
     final item = _groceryItems[index];
     _groceryItems[index] = item.copyWith(isComplete: change);
+    notifyListeners();
+  }
+
+  void currentIndex(int index) {
+    itemIndex = index;
+    print(itemIndex);
+    notifyListeners();
   }
 }

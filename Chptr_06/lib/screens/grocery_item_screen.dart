@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:my_app/components/grocery_tile.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../models/models.dart';
 
@@ -34,11 +36,14 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
   TimeOfDay _timeOfDay = TimeOfDay.now();
   Color _currentColor = Colors.white;
   int _currentSliderValue = 0;
+  bool _isComplete = false;
 
   @override
   void initState() {
+    super.initState();
     final originalItem = widget.originalItem;
     if (originalItem != null) {
+      _isComplete = originalItem.isComplete;
       _nameController.text = originalItem.name;
       _name = originalItem.name;
       _currentSliderValue = originalItem.quantity;
@@ -54,7 +59,6 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
         _name = _nameController.text;
       });
     });
-    super.initState();
   }
 
   @override
@@ -64,7 +68,26 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
         actions: [
           IconButton(
             onPressed: (() {
-              //TODO: Add callback handler
+              final groceryItem = GroceryItem(
+                id: widget.originalItem?.id ?? const Uuid().v1(),
+                name: _nameController.text,
+                importance: _importance,
+                color: _currentColor,
+                quantity: _currentSliderValue,
+                date: DateTime(
+                  _dueDate.year,
+                  _dueDate.month,
+                  _dueDate.day,
+                  _timeOfDay.hour,
+                  _timeOfDay.minute,
+                ),
+                isComplete: _isComplete,
+              );
+              if (widget.isUpdating) {
+                widget.onUpdate(groceryItem);
+              } else {
+                widget.onCreate(groceryItem);
+              }
             }),
             icon: const Icon(Icons.check),
           ),
@@ -88,7 +111,28 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
             buildColorPicker(context),
             const SizedBox(height: 10),
             buildQuantityField(),
-            // TODO 19: Add Grocery Tile
+            GroceryTile(
+              item: GroceryItem(
+                id: 'previewMode',
+                name: _name,
+                importance: _importance,
+                color: _currentColor,
+                quantity: _currentSliderValue,
+                date: DateTime(
+                  _dueDate.year,
+                  _dueDate.month,
+                  _dueDate.day,
+                  _timeOfDay.hour,
+                  _timeOfDay.minute,
+                ),
+                isComplete: _isComplete,
+              ),
+              onComplete: (change) {
+                if (change != null) {
+                  setState((() => _isComplete = !_isComplete));
+                }
+              },
+            )
           ],
         ),
       ),
