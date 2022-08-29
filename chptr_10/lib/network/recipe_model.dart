@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'recipe_mopdel.g.dart';
+part 'recipe_model.g.dart';
 
 @JsonSerializable()
 class APIRecipeQuery {
@@ -34,7 +34,7 @@ class APIHits {
   APIHits({required this.recipe});
 
   factory APIHits.fromJson(Map<String, dynamic> json) =>
-      $_APIHitsFromJson(json);
+      _$APIHitsFromJson(json);
   Map<String, dynamic> toJson() => _$APIHitsToJson(this);
 }
 
@@ -45,7 +45,7 @@ class APIRecipe {
   String image;
   String url;
 
-  List<APIIngredient> ingredients;
+  List<APIIngredients> ingredients;
   double calories;
   double totalWeight;
   double totalTime;
@@ -81,7 +81,6 @@ String getWeight(double? weight) {
 }
 
 // TODO: Add @JsonSerializable() class APIIngredients
-
 @JsonSerializable()
 class APIIngredients {
   @JsonKey(name: 'text')
@@ -92,5 +91,5 @@ class APIIngredients {
 
   factory APIIngredients.fromJson(Map<String, dynamic> json) =>
       _$APIIngredientsFromJson(json);
-      Map<String, dynamic> toJson => _$APIIngredientsToJson(this);
+  Map<String, dynamic> toJson() => _$APIIngredientsToJson(this);
 }
